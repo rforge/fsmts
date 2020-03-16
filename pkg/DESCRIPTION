@@ -1,0 +1,11 @@
+Package: fsMTS
+Type: Package
+Title: Feature Selection for Multiavriate Time Series
+Version: 0.1.0
+Author: Dmitry Pavlyuk
+Maintainer: Dmitry Pavlyuk <Dmitry.Pavlyuk@tsi.lv>
+Description: The package implements feature selection routines for multivariate time series. 
+    The list of implemented methods includes: distance-based feature selection, cross-correlation, and theor emsembles.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
