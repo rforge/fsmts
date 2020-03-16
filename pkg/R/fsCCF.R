@@ -3,7 +3,7 @@ fsCCF.run <- function(mts, maxLag) {
   res <- matrix(0, n*maxLag, n)
   for (i in 1:n){
     for (j in i:n){
-        corVals <- ccf(mts[,i],mts[,j], lag.max=maxLag, plot=F)
+        corVals <- stats::ccf(mts[,i],mts[,j], lag.max=maxLag, plot=F)
         res[j+(0:(maxLag-1))*n, i] <- rev(corVals$acf[1:maxLag])
         res[i+(0:(maxLag-1))*n, j] <- corVals$acf[(maxLag+2):(2*maxLag+1)]
     }
@@ -11,6 +11,8 @@ fsCCF.run <- function(mts, maxLag) {
   res <- fsNames(res, mts, maxLag)
   return (res)
 }
+
+#' @export
 fsCCF <- list(
   name="Cross-correlation based feature selection",
   run = fsCCF.run,

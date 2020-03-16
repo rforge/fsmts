@@ -3,14 +3,15 @@ fsGLASSO.run <- function(mts, maxLag, rho) {
   res<-matrix(0, k*maxLag, k)
   for (i in 1:k){
     dat <- composeYX(mts, i, maxLag)
-    dat.cov<-cor(dat)
-    gl<-glasso(dat.cov, rho=rho)
+    dat.cov<-stats::cor(dat)
+    gl<-glasso::glasso(dat.cov, rho=rho)
     links<-gl$w[1,-1]
     res[,i] <- links
   }
   return (res)
 }
 
+#' @export
 fsGLASSO <- list(
   name="Local graphical LASSO (correlation matrix)",
   run = fsGLASSO.run,

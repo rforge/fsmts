@@ -9,6 +9,8 @@ fsDistance.run <- function(mts, maxLag, shortest, step=1) {
   res <- fsNames(as.matrix(res), mts, maxLag)
   return (res)
 }
+
+#' @export
 fsDistance <- list(
   name="Distance-based feature selection",
   run = fsDistance.run,

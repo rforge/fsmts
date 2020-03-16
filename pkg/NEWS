@@ -1,0 +1,16 @@
+Version 0.1.0 (2020-03-16)
+------------------------------------------------------------------------------
+
+First version is release. Implemented feature selection methods:
+
+* Distance-based (binary)
+
+* Cross correlation-based (system-wide)
+
+* Random forest-based (equation-wise feature selection that based on all equations' estimates)
+
+* Graphical LASSO-based (equation-wise feature selection that based on all equations' estimates)
+
+* Least angle regression-based (equation-wise feature selection that based on all equations' estimates)
+
+* Mutual information-based (equation-wise feature selection that based on all equations' estimates)

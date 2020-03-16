@@ -9,6 +9,7 @@ fsIndependent.run <- function(mts, maxLag, rho) {
   return (r)
 }
 
+#' @export
 fsIndependent <- list(
   name="Independent time series",
   run = fsIndependent.run,

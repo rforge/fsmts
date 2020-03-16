@@ -7,5 +7,12 @@ Maintainer: Dmitry Pavlyuk <Dmitry.Pavlyuk@tsi.lv>
 Description: The package implements feature selection routines for multivariate time series. 
     The list of implemented methods includes: distance-based feature selection, cross-correlation, and theor emsembles.
 License: GPL-3
+Depends:
+    R (>= 3.6)
+Imports:
+    tibble,tidyverse,dplyr,glasso,randomForest,lars,mpmi
+Suggests: knitr, rmarkdown, sparsevar
+VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.1.0

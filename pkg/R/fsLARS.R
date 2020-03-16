@@ -4,7 +4,7 @@ fsLARS.run <- function(mts, maxLag) {
   res<-fsNames(res, mts, maxLag)
   for (i in 1:k){
     dat <- composeYX(mts, i, maxLag)
-    reg <- lars(dat[,-1],dat[,1],type="lar")
+    reg <- lars::lars(dat[,-1],dat[,1],type="lar")
     coef1 <- reg$beta
     s1 <- apply(abs(coef1), 1, sum)
     s1 <- s1/max(s1)
@@ -16,6 +16,7 @@ fsLARS.run <- function(mts, maxLag) {
   return (res)
 }
 
+#' @export
 fsLARS <- list(
   name="Least-angle regression",
   run = fsLARS.run,

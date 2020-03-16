@@ -11,10 +11,12 @@ fsNames <- function(res, mts, maxLag){
   return (res)
 }
 
+#' @export
 fs.sparsity <- function(m){
   return(length(m[m>0])/(ncol(m)*nrow(m)))
 }
 
+#' @export
 fs.match <- function(m1, m2){
   if (nrow(m1)==nrow(m2) && ncol(m1)==ncol(m2) ){
     return(sum(m1==m2)/(ncol(m1)*nrow(m1)))
@@ -48,6 +50,7 @@ matrixInvRank <-function(m){
   return(res)
 }
 
+#' @export
 ensembleFS <- function(ms, threshold){
   res<-NULL
   for (m in ms){
@@ -57,19 +60,19 @@ ensembleFS <- function(ms, threshold){
       res <- res + matrixInvRank(m)
     }
   }
-  th <- quantile(res, threshold)
+  th <- stats::quantile(res, threshold)
   res <- ifelse(res>th,0,1)
   return(res)
 }
-
+#' @export
 cutoff <- function(m, threshold){
   m<-matrixInvRank(m)
-  th <- quantile(m, threshold)
+  th <- stats::quantile(m, threshold)
   res <- ifelse(m>th,0,1)
   return(res)
 }
 
-
+#' @export
 fs.match.in <- function(est, real){
   if (nrow(est)==nrow(real) && ncol(est)==ncol(real)){
     index <- sum(est+real==2)/sum(real==1)
