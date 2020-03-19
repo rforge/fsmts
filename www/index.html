@@ -1,0 +1,105 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en   ">
+
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>fsMTS - Feature Selection for Multivariate Time Series</title>
+  </head>
+
+ <body>
+      <h2>
+         <strong>fsMTS</strong>
+      </h2>
+      <div>
+        Implementation of feature selection methods for multivariate time series
+      </div>
+    <h3>
+       News
+    </h3>
+    <ul>
+      <li>First version is released (2020-March) </li>
+    </ul>
+    <h3>
+       Supported feature selection algorithms:
+    </h3>
+        <ul>
+          <li>
+            <i>Own lags</i> implements selection of own lags for every component of a multivariate time series
+          </li>
+          <li>
+            <i>Distance-based</i> implements feature selection based on an external structure of distances between components of a multivariate time series
+          </li>
+          <li>
+            <i>Cross-correlation-based</i> utilises Pearson's cross-correlation coefficients for identification of relationships between components of a multivariate time series
+          </li>
+          <li>
+            <i>Graphical LASSO-based</i> utilises the graphical LASSO algorithm for finding a sparse representation of the multivariate time series' covariance matrix
+          </li>
+          <li>
+            <i>Random forest-based</i> utilises the random forest algorithm for identification of relationships between components of a multivariate time series
+          </li>
+          <li>
+            <i>Least angle regression-based</i> utilises the least angle regression for identification of relationships between components of a multivariate time series
+          </li>
+          <li>
+            <i>Mutual information-based</i> utilises mutual information for identification of relationships between components of a multivariate time series
+          </li>
+        </ul>
+
+    <h3>
+      Authors
+    </h3>
+    <ul>
+      <li>
+        <a href="https://www.researchgate.net/profile/Dmitry_Pavlyuk">Dmitry Pavlyuk</a>
+      </li>
+    </ul>
+    <h3>
+       Repositories
+    </h3>
+    <ul>
+      <li>The <strong>released</strong> version is available on
+        <a href="http://CRAN.R-Project.org/">CRAN</a>
+        <ul>
+          <li>You can <strong>download</strong> the source code and binaries
+            from
+            <a href="http://CRAN.R-Project.org/web/packages/fsMTS/index.html">
+            http://cran.r-project.org/web/packages/fsMTS/index.html</a>.
+          </li>
+          <li>You can <strong>install</strong> the package by typing
+            at the R console:
+            <pre> install.packages( "fsMTS" )</pre>
+          </li>
+        </ul>
+      </li>
+      <li>The <strong>development</strong> version is available on
+        <a href="http://R-Forge.R-Project.org/">R-Forge</a>
+        <ul>
+          <li>You can <strong>download</strong> the source code and binaries from
+            <a href="https://r-forge.r-project.org/scm/?group_id=2392">
+            https://r-forge.r-project.org/scm/?group_id=2392</a>.
+          </li>
+          <li>You can <strong>install</strong> the package by typing
+            at the R console:
+            <pre> install.packages( "fsMTS", repos="http://R-Forge.R-project.org" )</pre>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3>
+       License
+    </h3>
+    <ul>
+      <li>
+         Under the  <a href="http://www.gnu.org/licenses/gpl.html">
+            GNU General Public License (GPL)</a>
+      </li>
+    </ul>
+    
+    <div>
+       Last Update: 17-Mar-2020
+    </div>
+</body>
+</html>

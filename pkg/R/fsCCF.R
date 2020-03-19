@@ -1,21 +1,15 @@
-fsCCF.run <- function(mts, maxLag) {
+fsCCF <- function(mts, max.lag,  show.progress = TRUE) {
   n <- ncol(mts)
-  res <- matrix(0, n*maxLag, n)
+  res <- matrix(0, n*max.lag, n)
   for (i in 1:n){
     for (j in i:n){
-        corVals <- stats::ccf(mts[,i],mts[,j], lag.max=maxLag, plot=F)
-        res[j+(0:(maxLag-1))*n, i] <- rev(corVals$acf[1:maxLag])
-        res[i+(0:(maxLag-1))*n, j] <- corVals$acf[(maxLag+2):(2*maxLag+1)]
+        corVals <- stats::ccf(mts[,i],mts[,j], lag.max=max.lag, plot=F)
+        res[j+(0:(max.lag-1))*n, i] <- rev(corVals$acf[1:max.lag])
+        res[i+(0:(max.lag-1))*n, j] <- corVals$acf[(max.lag+2):(2*max.lag+1)]
     }
+    if (show.progress) svMisc::progress(100*i/n)
   }
-  res <- fsNames(res, mts, maxLag)
+  res <- fsNames(res, mts, max.lag)
+  res <- abs(res)
   return (res)
 }
-
-#' @export
-fsCCF <- list(
-  name="Cross-correlation based feature selection",
-  run = fsCCF.run,
-  functions = c(),
-  packages = c()
-)
