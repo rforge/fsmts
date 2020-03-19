@@ -13,6 +13,7 @@ Description: The package implements feature selection routines for multivariate 
     least angle regression-based, 
     and mutual information-based. 
     In addition, the package implements functions for ensemble feature selection (using feature ranking and majority voting).
+    The package is implemented within Dmitry Pavlyuk's research project No. 1.1.1.2/VIAA/1/16/112 "Spatiotemporal urban traffic modelling using big data".
 License: GPL-3
 Depends:
     R (>= 3.6)
