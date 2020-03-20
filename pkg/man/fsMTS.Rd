@@ -132,8 +132,3 @@ Haworth, J., Cheng, T., 2014. Graphical LASSO for local spatio-temporal neighbou
 
 Gelper S. and Croux C., 2008. Least angle regression for time series forecasting with many predictors, Leuven, Belgium, p.37.
 }
-\keyword{feature}
-\keyword{multivariate}
-\keyword{selection}
-\keyword{series,}
-\keyword{time}

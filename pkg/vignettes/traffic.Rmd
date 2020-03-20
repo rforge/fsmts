@@ -15,50 +15,53 @@ knitr::opts_chunk$set(fig.width=6, fig.height=6)
 require(fsMTS)
 require(plot.matrix)
 require(svMisc)
+require(MTS)
 ```
+
 ```{r load_data}
 data(traffic)
 data <- scale(traffic$data[,-1])
+max.lag <- 3
 ```
 
 ```{r fsOwnlags}
-mIndep<-fsMTS(data, max.lag=3, method="ownlags")
+mIndep<-fsMTS(data, max.lag=max.lag, method="ownlags")
 plot(mIndep, col=rev(heat.colors(10)), key=NULL, 
      main="Only own lags")
 ```
 
 ```{r fsCCF}
-mCCF<-fsMTS(data, max.lag=3, method="CCF")
+mCCF<-fsMTS(data, max.lag=max.lag, method="CCF")
 plot(mCCF, col=rev(heat.colors(10)), key=NULL, 
      main="Cross-correlations")
 ```
 
 ```{r fsDistance}
-mDistance<-fsMTS(data, max.lag=3, method="distance", shortest = traffic$shortest, step = 5)
+mDistance<-fsMTS(data, max.lag=max.lag, method="distance", shortest = traffic$shortest, step = 5)
 plot(mDistance, col=rev(heat.colors(10)), key=NULL, 
      main="Distance-based feature selection")
 ```
 
 ```{r fsGLASSO}
-mGLASSO<-fsMTS(data, max.lag=3,method="GLASSO", rho = 0.1)
+mGLASSO<-fsMTS(data, max.lag=max.lag,method="GLASSO", rho = 0.1)
 plot(mGLASSO, col=rev(heat.colors(10)), key=NULL, 
      main="Graphical LASSO-based feature selection")
 ```
 
 ```{r fsLARS}
-mLARS<-fsMTS(data, max.lag=3,method="LARS")
+mLARS<-fsMTS(data, max.lag=max.lag,method="LARS")
 plot(mLARS, col=rev(heat.colors(10)), key=NULL, 
      main="Least angle  regression-based feature selection")
 ```
 
 ```{r fsRF}
-mRF<-fsMTS(data, max.lag=3,method="RF")
+mRF<-fsMTS(data, max.lag=max.lag,method="RF")
 plot(mRF, col=rev(heat.colors(10)), key=NULL, 
      main="Random forest-based feature selection")
 ```
 
 ```{r fsMI}
-mMI<-fsMTS(data, max.lag=3,method="MI")
+mMI<-fsMTS(data, max.lag=max.lag,method="MI")
 plot(mMI, col=rev(heat.colors(10)), key=NULL, 
      main="Mutual information-based feature selection")
 ```
@@ -89,4 +92,12 @@ mlist[["EnsembleMajV"]] <- mE2
 msimilarity <- fsSimilarityMatrix(mlist, threshold=th, method="Kuncheva")
 plot(msimilarity, digits=2, col=rev(heat.colors(ncol(msimilarity))), key=NULL,
      main="Pairwise comparison of feature sets")
+```
+
+
+Use obtained features for model estimation and prediction
+```{r predict}
+model <- VAR(data, p=max.lag, include.mean = F, fixed = mE2)
+print(model$coef)
+VARpred(model,1)
 ```

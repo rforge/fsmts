@@ -66,9 +66,3 @@ mlist[["EnsembleMajV"]] <- fsEnsemble(mlist, threshold = th, method="majority")
 \references{
 Pes, B., 2019. Ensemble feature selection for high-dimensional data: a stability analysis across multiple domains. Neural Computing and Applications. https://doi.org/10.1007/s00521-019-04082-3
 }
-\keyword{ensemble}
-\keyword{feature}
-\keyword{multivariate}
-\keyword{selection,}
-\keyword{series,}
-\keyword{time}

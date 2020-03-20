@@ -21,7 +21,6 @@
 #' @return returns a binary feature matrix.
 #' Columns correpond to components of the time series; rows correspond to lags.
 #'
-#' @keywords multivariate time series, feature selection, ensemble
 #' @export
 #'
 #' @references

@@ -5,7 +5,6 @@
 #' @docType package
 #' @title Feature selection for Multivariate Time Series
 #' @author Dmitry Pavlyuk \email{Dmitry.V.Pavlyuk@@gmail.com}
-#' @keywords feature selection, multivariate time series
 NULL
 
 #' Urban traffic (pre-processed)

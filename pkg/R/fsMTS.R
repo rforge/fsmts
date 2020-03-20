@@ -59,7 +59,6 @@
 #' where \emph{k} is number of time series components (number of columns in the \emph{mts} parameter).
 #' Columns correpond to components of the time series; rows correspond to lags (from 1 to \emph{max.lag}).
 #'
-#' @keywords multivariate time series, feature selection
 #' @export
 #' @references
 #'

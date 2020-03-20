@@ -13,8 +13,3 @@ Implementation of feature selection methods for multivariate time series
 \author{
 Dmitry Pavlyuk \email{Dmitry.V.Pavlyuk@gmail.com}
 }
-\keyword{feature}
-\keyword{multivariate}
-\keyword{selection,}
-\keyword{series}
-\keyword{time}

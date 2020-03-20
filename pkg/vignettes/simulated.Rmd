@@ -16,10 +16,12 @@ require(sparsevar)
 require(fsMTS)
 require(plot.matrix)
 require(svMisc)
+require(MTS)
 ```
 
 ```{r generate_structures}
 k <- 5
+max.lag <- 3
 N <- 500
 genM <- function(k, sparsity_lag = 0.2){
   nonzero <- round(sparsity_lag*k*k)
@@ -33,11 +35,10 @@ genM <- function(k, sparsity_lag = 0.2){
   return(m)
 }
 set.seed(9)
-pars <- list(
-  l1 = genM(k),
-  l2 = genM(k),
-  l3 = genM(k)
-)
+pars <- list()
+for (i in 1:max.lag){
+  pars[[paste0("l",i)]] <- genM(k) 
+}
 res<-data.frame()
 for (i in pars){
   res <-rbind(res,i)
@@ -49,7 +50,7 @@ plot(abs(mreal), digits=2, col=rev(heat.colors(10)), key=NULL,
 ```
 
 ```{r generate_MTS}
-mts.sim <- simulateVAR(N=k, p=3, nobs=N,fixedMat=pars)
+mts.sim <- simulateVAR(N=k, p=max.lag, nobs=N,fixedMat=pars)
 data <- mts.sim$series
 colnames(data)<-paste0("V",1:ncol(data))
 ```
@@ -66,43 +67,43 @@ data <- scale(data)
 ```
 
 ```{r fsOwnlags}
-mIndep<-fsMTS(data, max.lag=3, method="ownlags")
+mIndep<-fsMTS(data, max.lag=max.lag, method="ownlags")
 plot(mIndep, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Only own lags")
 ```
 
 ```{r fsCCF}
-mCCF<-fsMTS(data, max.lag=3, method="CCF")
+mCCF<-fsMTS(data, max.lag=max.lag, method="CCF")
 plot(mCCF, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Cross-correlations")
 ```
 
 ```{r fsDistance}
-mDistance<-fsMTS(data, max.lag=3, method="distance", shortest = shortest, step = 1)
+mDistance<-fsMTS(data, max.lag=max.lag, method="distance", shortest = shortest, step = 1)
 plot(mDistance, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Distance-based feature selection")
 ```
 
 ```{r fsGLASSO}
-mGLASSO<-fsMTS(data, max.lag=3,method="GLASSO", rho = 0.1)
+mGLASSO<-fsMTS(data, max.lag=max.lag,method="GLASSO", rho = 0.1)
 plot(mGLASSO, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Graphical LASSO-based feature selection")
 ```
 
 ```{r fsLARS}
-mLARS<-fsMTS(data, max.lag=3,method="LARS")
+mLARS<-fsMTS(data, max.lag=max.lag,method="LARS")
 plot(mLARS, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Least angle  regression-based feature selection")
 ```
 
 ```{r fsRF}
-mRF<-fsMTS(data, max.lag=3,method="RF")
+mRF<-fsMTS(data, max.lag=max.lag,method="RF")
 plot(mRF, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Random forest-based feature selection")
 ```
 
 ```{r fsMI}
-mMI<-fsMTS(data, max.lag=3,method="MI")
+mMI<-fsMTS(data, max.lag=max.lag,method="MI")
 plot(mMI, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Mutual information-based feature selection")
 ```
@@ -134,4 +135,12 @@ mlist[["Real"]] <- ifelse(mreal!=0,1,0)
 msimilarity <- fsSimilarityMatrix(mlist, threshold=th, method="Kuncheva")
 plot(msimilarity, digits=2, col=rev(heat.colors(ncol(msimilarity))), key=NULL,
      main="Pairwise comparison of feature sets")
+```
+
+
+Use obtained features for model estimation and prediction
+```{r predict}
+model <- VAR(data, p=max.lag, include.mean = F, fixed = mE2)
+print(model$coef)
+VARpred(model,1)
 ```

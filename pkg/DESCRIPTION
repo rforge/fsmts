@@ -1,10 +1,10 @@
 Package: fsMTS
 Type: Package
 Title: Feature Selection for Multivariate Time Series
-Version: 0.1.1
+Version: 0.1.2
 Author: Dmitry Pavlyuk
 Maintainer: Dmitry Pavlyuk <Dmitry.Pavlyuk@tsi.lv>
-Description: The package implements feature selection routines for multivariate time series (MTS). 
+Description: Implements feature selection routines for multivariate time series (MTS). 
     The list of implemented methods includes: 
     own lags (independent MTS components), 
     distance-based (using external structure),
@@ -19,7 +19,7 @@ Depends:
     R (>= 3.6)
 Imports:
     glasso,randomForest,lars,mpmi
-Suggests: knitr, rmarkdown, sparsevar, plot.matrix, svMisc
+Suggests: knitr, rmarkdown, sparsevar, plot.matrix, svMisc, MTS
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
