@@ -8,7 +8,8 @@ Description: Implements feature selection routines for multivariate time series 
     The list of implemented methods includes: 
     own lags (independent MTS components), 
     distance-based (using external structure),
-    cross-correlation-based; graphical LASSO-based,
+    cross-correlation-based,
+    graphical LASSO-based,
     random forest-based,
     least angle regression-based, 
     and mutual information-based. 
