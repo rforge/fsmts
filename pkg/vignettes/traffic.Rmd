@@ -22,58 +22,79 @@ require(MTS)
 data(traffic)
 data <- scale(traffic$data[,-1])
 max.lag <- 3
+show.progress = T
 ```
 
 ```{r fsOwnlags}
-mIndep<-fsMTS(data, max.lag=max.lag, method="ownlags")
+mIndep<-fsMTS(data, max.lag=max.lag, method="ownlags",show.progress=show.progress)
 plot(mIndep, col=rev(heat.colors(10)), key=NULL, 
      main="Only own lags")
 ```
 
 ```{r fsCCF}
-mCCF<-fsMTS(data, max.lag=max.lag, method="CCF")
+mCCF<-fsMTS(data, max.lag=max.lag, method="CCF",show.progress=show.progress)
 plot(mCCF, col=rev(heat.colors(10)), key=NULL, 
      main="Cross-correlations")
 ```
 
 ```{r fsDistance}
-mDistance<-fsMTS(data, max.lag=max.lag, method="distance", shortest = traffic$shortest, step = 5)
+mDistance<-fsMTS(data, max.lag=max.lag, method="distance", shortest = traffic$shortest, step = 5,show.progress=show.progress)
 plot(mDistance, col=rev(heat.colors(10)), key=NULL, 
      main="Distance-based feature selection")
 ```
 
 ```{r fsGLASSO}
-mGLASSO<-fsMTS(data, max.lag=max.lag,method="GLASSO", rho = 0.1)
-plot(mGLASSO, col=rev(heat.colors(10)), key=NULL, 
+mGLASSO.localized<-fsMTS(data, max.lag=max.lag,method="GLASSO", rho = 0.1,show.progress=show.progress)
+plot(mGLASSO.localized, col=rev(heat.colors(10)), key=NULL, 
+     main="Graphical LASSO-based feature selection")
+mGLASSO.global<-fsMTS(data, max.lag=max.lag,method="GLASSO", rho = 0.1,show.progress=show.progress, localized = FALSE)
+plot(mGLASSO.global, col=rev(heat.colors(10)), key=NULL, 
      main="Graphical LASSO-based feature selection")
 ```
 
 ```{r fsLARS}
-mLARS<-fsMTS(data, max.lag=max.lag,method="LARS")
+mLARS<-fsMTS(data, max.lag=max.lag,method="LARS",show.progress=show.progress)
 plot(mLARS, col=rev(heat.colors(10)), key=NULL, 
      main="Least angle  regression-based feature selection")
 ```
 
 ```{r fsRF}
-mRF<-fsMTS(data, max.lag=max.lag,method="RF")
+mRF<-fsMTS(data, max.lag=max.lag,method="RF",show.progress=show.progress)
 plot(mRF, col=rev(heat.colors(10)), key=NULL, 
      main="Random forest-based feature selection")
 ```
 
 ```{r fsMI}
-mMI<-fsMTS(data, max.lag=max.lag,method="MI")
-plot(mMI, col=rev(heat.colors(10)), key=NULL, 
-     main="Mutual information-based feature selection")
+mMI.localized<-fsMTS(data, max.lag=max.lag,method="MI",show.progress=show.progress, localized= TRUE)
+plot(mMI.localized,  col=rev(heat.colors(10)), key=NULL, 
+     main="Mutual information-based (localized) feature selection")
+mMI.global<-fsMTS(data, max.lag=max.lag,method="MI",show.progress=show.progress, localized= FALSE)
+plot(mMI.global, col=rev(heat.colors(10)), key=NULL, 
+     main="Mutual information-based (global) feature selection")
+```
+
+
+```{r fsPSC}
+mPSC.localized<-fsMTS(data, max.lag=max.lag,method="PSC",show.progress=show.progress)
+plot(mPSC.localized, col=rev(heat.colors(10)), key=NULL, 
+     main="PSC-based feature selection")
+mPSC.global<-fsMTS(data, max.lag=max.lag,method="PSC",show.progress=show.progress, localized= FALSE)
+plot(mPSC.global, col=rev(heat.colors(10)), key=NULL, 
+     main="PSC-based feature selection")
 ```
 
 ```{r fsEnsemble}
 mlist <- list(Independent = mIndep,
               Distance = mDistance,
               CCF = mCCF,
-              GLASSO = mGLASSO,
+              GLASSO.localized = mGLASSO.localized,
+              GLASSO.global = mGLASSO.global,
               LARS = mLARS,
               RF = mRF,
-              MI = mMI)
+              MI.localized = mMI.localized,
+              MI.global = mMI.global,
+              PSC.localized = mPSC.localized,
+              PSC.global=mPSC.global)
 
 th<-0.1
 mE1 <- fsEnsemble(mlist, threshold = th, method="ranking")

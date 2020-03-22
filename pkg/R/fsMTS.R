@@ -41,6 +41,14 @@
 #'  The method is localized - the least angle regression is independently estimated for every MTS
 #'  component and lags (1:_max.lag_) of all other components.}
 #' }
+#' @param localized the logical parameter to executed localized (component-wise) feature selection
+#' if the selected method supports this ("MI", "GLASSO", "PSC"). Localized versions of algorithms are based on selection
+#' of features for independently for every MTS component from all lagged components. Non-localised versions include
+#' simulteneous feature selection for all components, including potential instantaneous effects
+#' (relationships between feature within the same lag). Leter, non-localised algortihms ignore instantaneous effects and return only
+#' lagged features.
+#'
+#'   By default is TRUE
 #' @param show.progress the logical parameter to print progress of calculation.  By default is FALSE.
 #' @param ... method-specific parameters:
 #' \itemize{
@@ -64,11 +72,12 @@
 #'
 #' \emph{Distance-based feature selection for MTS}
 #'
-#' Pfeifer, P. E., & Deutsch, S. J. (1980). A Three-Stage Iterative Procedure for Space-Time Modeling. Technometrics, 22(1), 35. doi:10.2307/1268381
+#' Pfeifer, P. E., & Deutsch, S. J. 1980. A Three-Stage Iterative Procedure for Space-Time Modeling. Technometrics, 22(1), 35.
 #'
 #' \emph{Cross-corelation-based feature selection for MTS}
 #'
-#' Yang, K., Yoon, H., Shahabi, C., 2005. A supervised feature subset selection technique for multivariate time series, in: Proceedings of the Workshop on Feature Selection for Data Mining: Interfacing Machine Learning with Statistics, 92–101.
+#' Netoff I., Caroll T.L., Pecora L.M., Sciff S.J. 2006. Detecting coupling in the presence of noise and nonlinearity.
+#' In: Schelter B, Winterhalder W, Timmer J, editors. Handbook of time series analysis.
 #'
 #' \emph{Mutual information-based feature selection for MTS}
 #'
@@ -87,6 +96,11 @@
 #' \emph{Least angle regression for feature selection for MTS}
 #'
 #' Gelper S. and Croux C., 2008. Least angle regression for time series forecasting with many predictors, Leuven, Belgium, p.37.
+#'
+#' \emph{Partial spectral coherence for feature selection for MTS}
+#'
+#' Davis, R.A., Zang, P., Zheng, T., 2016. Sparse Vector Autoregressive Modeling. Journal of Computational and Graphical Statistics 25, 1077–1096.
+#'
 #'
 #' @examples
 #'
@@ -115,7 +129,8 @@
 #' th<-0.30
 #' (msimilarity <- fsSimilarityMatrix(mlist,threshold = th, method="Kuncheva"))
 #'
-fsMTS <- function(mts, max.lag, method=c("ownlags", "distance", "CCF","MI", "RF", "GLASSO", "LARS"), show.progress = F, ...) {
+fsMTS <- function(mts, max.lag, method=c("ownlags", "distance", "CCF","MI", "RF", "GLASSO", "LARS", "PSC"),
+                  show.progress = F, localized = F,...) {
   method <- match.arg(method)
   if (is.null(mts) || !is.matrix(mts))
     stop('Incorrect mts value - a matrix with multivariate time series is required')
@@ -138,14 +153,15 @@ fsMTS <- function(mts, max.lag, method=c("ownlags", "distance", "CCF","MI", "RF"
            fsDistance(mts, max.lag, shortest=opts$shortest, step=opts$step)
          },
          CCF=fsCCF(mts, max.lag, show.progress=show.progress),
-         MI=fsMI(mts, max.lag, show.progress=show.progress),
+         MI=fsMI(mts, max.lag, show.progress=show.progress,localized=localized),
          RF=fsRF(mts, max.lag, show.progress=show.progress),
+         PSC=fsPSC(mts, max.lag, show.progress=show.progress,localized=localized),
          GLASSO={
            if (is.null(opts$rho))
              stop('rho value is required for graphical LASSO')
            if (!is.numeric(opts$rho)||opts$rho<0||opts$rho>1)
              stop('Incorrect rho value for graphical LASSO - value from the [0, 1] interval is required')
-           fsGLASSO(mts, max.lag, show.progress=show.progress, rho=opts$rho)
+           fsGLASSO(mts, max.lag,rho=opts$rho, show.progress=show.progress, localized=localized)
          },
          LARS=fsLARS(mts, max.lag, show.progress=show.progress),
          stop('Unknown feature selection method')
