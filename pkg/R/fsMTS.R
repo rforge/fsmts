@@ -42,7 +42,7 @@
 #'  component and lags (1:_max.lag_) of all other components.}
 #' }
 #' @param localized the logical parameter to executed localized (component-wise) feature selection
-#' if the selected method supports this ("MI", "GLASSO", "PSC"). Localized versions of algorithms are based on selection
+#' if the selected method supports this ("MI", "GLASSO", "PSC", "RF"). Localized versions of algorithms are based on selection
 #' of features for independently for every MTS component from all lagged components. Non-localised versions include
 #' simulteneous feature selection for all components, including potential instantaneous effects
 #' (relationships between feature within the same lag). Leter, non-localised algortihms ignore instantaneous effects and return only
@@ -154,7 +154,7 @@ fsMTS <- function(mts, max.lag, method=c("ownlags", "distance", "CCF","MI", "RF"
          },
          CCF=fsCCF(mts, max.lag, show.progress=show.progress),
          MI=fsMI(mts, max.lag, show.progress=show.progress,localized=localized),
-         RF=fsRF(mts, max.lag, show.progress=show.progress),
+         RF=fsRF(mts, max.lag, show.progress=show.progress,localized=localized),
          PSC=fsPSC(mts, max.lag, show.progress=show.progress,localized=localized),
          GLASSO={
            if (is.null(opts$rho))

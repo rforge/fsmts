@@ -55,7 +55,7 @@ See Pavlyuk (2020) for more details}
 \item{show.progress}{the logical parameter to print progress of calculation.  By default is FALSE.}
 
 \item{localized}{the logical parameter to executed localized (component-wise) feature selection
-if the selected method supports this ("MI", "GLASSO", "PSC"). Localized versions of algorithms are based on selection
+if the selected method supports this ("MI", "GLASSO", "PSC", "RF"). Localized versions of algorithms are based on selection
 of features for independently for every MTS component from all lagged components. Non-localised versions include
 simulteneous feature selection for all components, including potential instantaneous effects
 (relationships between feature within the same lag). Leter, non-localised algortihms ignore instantaneous effects and return only

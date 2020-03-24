@@ -74,7 +74,7 @@ plot(mIndep, digits=2, col=rev(heat.colors(10)), key=NULL,
 ```
 
 ```{r fsCCF}
-mCCF<-fsMTS(data, max.lag=max.lag, method="CCF")
+mCCF<-fsMTS(data, max.lag=max.lag, method="CCF",show.progress=show.progress)
 plot(mCCF, digits=2, col=rev(heat.colors(10)), key=NULL, 
      main="Cross-correlations")
 ```
@@ -101,9 +101,12 @@ plot(mLARS, digits=2, col=rev(heat.colors(10)), key=NULL,
 ```
 
 ```{r fsRF}
-mRF<-fsMTS(data, max.lag=max.lag,method="RF",show.progress=show.progress)
-plot(mRF, digits=2, col=rev(heat.colors(10)), key=NULL, 
-     main="Random forest-based feature selection")
+mRF.localized<-fsMTS(data, max.lag=max.lag,method="RF",show.progress=show.progress, localized = TRUE)
+plot(mRF.localized, digits=2, col=rev(heat.colors(10)), key=NULL, 
+     main="Random forest-based (localized) feature selection")
+mRF.global<-fsMTS(data, max.lag=max.lag,method="RF",show.progress=show.progress, localized = FALSE)
+plot(mRF.global, digits=2, col=rev(heat.colors(10)), key=NULL, 
+     main="Random forest-based (global) feature selection")
 ```
 
 ```{r fsMI}
@@ -133,7 +136,8 @@ mlist <- list(Independent = mIndep,
               GLASSO.localized = mGLASSO.localized,
               GLASSO.global=mGLASSO.global,
               LARS = mLARS,
-              RF = mRF,
+              RF.localized = mRF.localized,
+              RF.global = mRF.global,
               MI.localized = mMI.localized,
               MI.global = mMI.global,
               PSC.localized = mPSC.localized,
@@ -156,7 +160,7 @@ mlist[["EnsembleMajV"]] <- mE2
 mlist[["Real"]] <- ifelse(mreal!=0,1,0)
 msimilarity <- fsSimilarityMatrix(mlist, threshold=th, method="Kuncheva")
 plot(msimilarity, digits=2, col=rev(heat.colors(ncol(msimilarity))), key=NULL,
-     main="Pairwise comparison of feature sets")
+     main="Pairwise comparison of feature sets", cex.axis=0.7)
 ```
 
 
