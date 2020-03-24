@@ -1,6 +1,7 @@
 fsMTS.Rcheck
-pkg/.Rproj.user
-pkg/.Rhistory
-pkg/.RData
-pkg/.Ruserdata
-pkg/fsMTS.Rproj
+.Rproj.user
+.Rhistory
+.Rhistory
+.RData
+.Ruserdata
+fsMTS.Rproj
