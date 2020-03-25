@@ -6,7 +6,7 @@ Authors@R: person("Dmitry", "Pavlyuk", email = "Dmitry.Pavlyuk@tsi.lv",comment =
 Description: Implements feature selection routines for multivariate time series (MTS). 
     The list of implemented algorithms includes: 
     own lags (independent MTS components), 
-    distance-based (using external structure, e.g. Pfeifer and Deutsch (1980) <doi:10.1080/00401706.1980.10486099>),
+    distance-based (using external structure, e.g. Pfeifer and Deutsch (1980) <doi:10.2307/1268381>),
     cross-correlation (see  Schelter et al. (2006, ISBN:9783527406234)),
     graphical LASSO (see Haworth and Cheng (2014) <https://www.gla.ac.uk/media/Media_401739_smxx.pdf>),
     random forest (see Pavlyuk (2020) "Random Forest Variable Selection for Sparse Vector Autoregressive Models" in Contributions to Statistics, in production),
