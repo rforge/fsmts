@@ -9,7 +9,7 @@ fsSimilarity(
   feature.set2,
   cutoff = FALSE,
   threshold = 1,
-  method = c("Kuncheva", "intersection")
+  method = c("Kuncheva", "intersection", "Hamming")
 )
 }
 \arguments{
@@ -26,8 +26,8 @@ By default is FALSE.}
 Implemented metrics:
 \itemize{
  \item{\strong{"intersection"}}{ - a share of matching features to maximal possible number of matching features}
- \item{\strong{"Kuncheva"}}{ - Kuncheva-like correction to the expected number of features matched by chance. See Kuncheva (2007)
- }
+ \item{\strong{"Kuncheva"}}{ - Kuncheva-like correction to the expected number of features matched by chance. See Kuncheva (2007)}
+ \item{\strong{"Hamming"}}{ - Hamming distance, normalised to [0,1], where 1 is for identical matrices}
 }}
 }
 \value{
@@ -49,6 +49,7 @@ mCCF<-fsMTS(data, max.lag=3, method="CCF")
 mLARS<-fsMTS(data, max.lag=3, method="LARS")
 fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Kuncheva")
 fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="intersection")
+fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Hamming")
 
 }
 \references{

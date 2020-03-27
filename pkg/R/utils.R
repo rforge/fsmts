@@ -174,8 +174,8 @@ fsSparsity <- function(feature.set){
 #' Implemented metrics:
 #' \itemize{
 #'  \item{\strong{"intersection"}}{ - a share of matching features to maximal possible number of matching features}
-#'  \item{\strong{"Kuncheva"}}{ - Kuncheva-like correction to the expected number of features matched by chance. See Kuncheva (2007)
-#'  }
+#'  \item{\strong{"Kuncheva"}}{ - Kuncheva-like correction to the expected number of features matched by chance. See Kuncheva (2007)}
+#'  \item{\strong{"Hamming"}}{ - Hamming distance, normalised to [0,1], where 1 is for identical matrices}
 #' }
 #'
 #' @return returns a value from the [0,1] interval, where 1 is for absolutely identical feature sets.
@@ -199,8 +199,9 @@ fsSparsity <- function(feature.set){
 #' mLARS<-fsMTS(data, max.lag=3, method="LARS")
 #' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Kuncheva")
 #' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="intersection")
+#' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Hamming")
 #'
-fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, method = c("Kuncheva", "intersection")){
+fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, method = c("Kuncheva", "intersection", "Hamming")){
   method <- match.arg(method)
   if (cutoff){
     m1 <- cutoff(feature.set1,threshold)
@@ -231,6 +232,9 @@ fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, 
                     sim<-(obs.intersection - mean.intersection)/(max.intersection - mean.intersection)
                     # Scale to [0, 1]
                     (sim - (-1))/(1 - (-1))
+                  },
+                  Hamming={
+                    sum(m1==m2)/(nrow(m1)*ncol(m1))
                   }
     )
   }else{
@@ -342,11 +346,12 @@ composeYX <- function(mts, i, max.lag){
 rankElements <-function(m){
   # Add small priority pieces to earlier lags and (after that) for first time series components
   m<-matrix(rank(m),ncol=ncol(m))
-  for (i in 1:nrow(m)){
-    for (j in 1:ncol(m)){
-      if (m[i,j]>0) m[i,j]<-m[i,j]-(i/1e+5)-(j/1e+7)
-    }
-  }
+  # for (i in 1:nrow(m)){
+  #   for (j in 1:ncol(m)){
+  #     if (m[i,j]>0) m[i,j]<-m[i,j]-(i/1e+5)-(j/1e+7)
+  #   }
+  # }
+  m<-ifelse(m>0,m-(row(m)/1e+5)-(col(m)/1e+7),0)
   max <- ncol(m)*nrow(m)
   res<-matrix(max-rank(m)+1, ncol=ncol(m))
   colnames(res) <- colnames(m)
