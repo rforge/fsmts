@@ -61,15 +61,11 @@ fsEnsemble <- function(feature.sets, threshold, method=c("ranking", "majority"))
   method <- match.arg(method)
   result<-switch(method,
     ranking={
-      res <- NULL
+      lranks<-list()
       for (m in feature.sets){
-        mtmp<-rankElements(m)
-        if (is.null(res)){
-          res <- mtmp
-        } else{
-          res <- res + mtmp
-        }
+        lranks[[length(lranks)+1]]<-rankElements(m)
       }
+      res<-apply(simplify2array(lranks),1:2, median)
       res <- cutoff(max(res)-res, threshold)
       res
     },
@@ -178,7 +174,8 @@ fsSparsity <- function(feature.set){
 #'  \item{\strong{"Hamming"}}{ - Hamming distance, normalised to [0,1], where 1 is for identical matrices}
 #' }
 #'
-#' @return returns a value from the [0,1] interval, where 1 is for absolutely identical feature sets.
+#' @return returns a value from the [-1, 1] interval for Kuncheva and from the [0,1] interval for other algorithms,
+#' where 1 is for absolutely identical feature sets.
 #'
 #' @export
 #'
@@ -231,7 +228,8 @@ fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, 
                     obs.intersection <- sum(m1+m2==2)
                     sim<-(obs.intersection - mean.intersection)/(max.intersection - mean.intersection)
                     # Scale to [0, 1]
-                    (sim - (-1))/(1 - (-1))
+                    # (sim - (-1))/(1 - (-1))
+                    sim
                   },
                   Hamming={
                     sum(m1==m2)/(nrow(m1)*ncol(m1))

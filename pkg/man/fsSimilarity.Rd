@@ -31,7 +31,8 @@ Implemented metrics:
 }}
 }
 \value{
-returns a value from the [0,1] interval, where 1 is for absolutely identical feature sets.
+returns a value from the [-1, 1] interval for Kuncheva and from the [0,1] interval for other algorithms,
+where 1 is for absolutely identical feature sets.
 }
 \description{
 \code{fsSimilarity} implements different methods for calculation similarity of two feature sets.
