@@ -65,7 +65,7 @@ fsEnsemble <- function(feature.sets, threshold, method=c("ranking", "majority"))
       for (m in feature.sets){
         lranks[[length(lranks)+1]]<-rankElements(m)
       }
-      res<-apply(simplify2array(lranks),1:2, median)
+      res<-apply(simplify2array(lranks),1:2, stats::median)
       res <- cutoff(max(res)-res, threshold)
       res
     },
@@ -169,7 +169,7 @@ fsSparsity <- function(feature.set){
 #' @param method a similarity metric.
 #' Implemented metrics:
 #' \itemize{
-#'  \item{\strong{"intersection"}}{ - a share of matching features to maximal possible number of matching features}
+#'  \item{\strong{"Jaccard"}}{ - a share of matching features to maximal possible number of matching features (Jaccard similarity)}
 #'  \item{\strong{"Kuncheva"}}{ - Kuncheva-like correction to the expected number of features matched by chance. See Kuncheva (2007)}
 #'  \item{\strong{"Hamming"}}{ - Hamming distance, normalised to [0,1], where 1 is for identical matrices}
 #' }
@@ -195,10 +195,10 @@ fsSparsity <- function(feature.set){
 #' mCCF<-fsMTS(data, max.lag=3, method="CCF")
 #' mLARS<-fsMTS(data, max.lag=3, method="LARS")
 #' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Kuncheva")
-#' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="intersection")
+#' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Jaccard")
 #' fsSimilarity(mCCF, mLARS, cutoff=TRUE, threshold=0.2, method="Hamming")
 #'
-fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, method = c("Kuncheva", "intersection", "Hamming")){
+fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, method = c("Kuncheva", "Jaccard", "Hamming")){
   method <- match.arg(method)
   if (cutoff){
     m1 <- cutoff(feature.set1,threshold)
@@ -214,7 +214,7 @@ fsSimilarity <- function(feature.set1, feature.set2, cutoff=FALSE, threshold=1, 
   res <- 0
   if (nrow(m1)==nrow(m2) && ncol(m1)==ncol(m2) ){
     res <- switch(method,
-                  intersection={
+                  Jaccard={
                     max.intersection <- min(sum(m1==1),sum(m2==1))
                     obs.intersection <- sum(m1+m2==2)
                     obs.intersection/max.intersection
