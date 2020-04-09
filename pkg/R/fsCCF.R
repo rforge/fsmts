@@ -1,10 +1,9 @@
 fsCCF <- function(mts, max.lag,  show.progress = TRUE) {
   n <- ncol(mts)
   res <- matrix(0, n*max.lag, n)
-  mts<-stats::na.omit(mts)
   for (i in 1:n){
     for (j in i:n){
-        corVals <- stats::ccf(mts[,i],mts[,j], lag.max=max.lag, plot=F)
+        corVals <- stats::ccf(mts[,i],mts[,j], lag.max=max.lag, plot=F, na.action = stats::na.omit)
         res[j+(0:(max.lag-1))*n, i] <- rev(corVals$acf[1:max.lag])
         res[i+(0:(max.lag-1))*n, j] <- corVals$acf[(max.lag+2):(2*max.lag+1)]
     }
